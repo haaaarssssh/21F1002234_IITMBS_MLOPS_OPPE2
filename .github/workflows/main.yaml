@@ -36,4 +36,5 @@ jobs:
         flags: "--allow-unauthenticated --max-instances=3" # Allow public access and set max scaling
 
     - name: Show Cloud Run URL
-      run: echo "Service URL: ${{ steps.deploy.outputs.url }}"
+      run: |
+        echo "Service URL: ${{ steps.deploy.outputs.url }}"
