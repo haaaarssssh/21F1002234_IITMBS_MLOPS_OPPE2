@@ -22,4 +22,5 @@ ENV GCP_PROJECT=$PROJECT_ID
 
 # Run api.py when the container launches
 # Bind to 0.0.0.0 to be accessible from outside the container
-CMD ["uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "$PORT"]
+
+CMD uvicorn src.api:app --host 0.0.0.0 --port $PORT
