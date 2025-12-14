@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
+from pantic import BaseModel, Field
 import joblib
 import pandas as pd
 import gcsfs
@@ -10,29 +10,37 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+print("--- API STARTING UP ---")
+
 app = FastAPI(title="Heart Disease Prediction API")
 
 # --- Load Model ---
-# In a real app, use src/config.py
+model = None
 PROJECT_ID = os.environ.get("GCP_PROJECT")
 BUCKET_NAME = f"gs://{PROJECT_ID}-oppe2-bucket"
 MODEL_PATH = "model/heart_disease_model.joblib"
-
-model = None
 
 @app.on_event("startup")
 def load_model():
     global model
     try:
-        logger.info("Loading model from GCS...")
+        print(f"Attempting to load model from GCS path: {BUCKET_NAME}/{MODEL_PATH}")
+        print(f"Using Project ID: {PROJECT_ID}")
+        
         fs = gcsfs.GCSFileSystem(project=PROJECT_ID)
-        with fs.open(f"{BUCKET_NAME}/{MODEL_PATH}", "rb") as f:
-            model = joblib.load(f)
-        logger.info("Model loaded successfully.")
-    except Exception as e:
-        logger.error(f"Error loading model: {e}")
-        raise RuntimeError("Could not load model from GCS")
+        print("GCSFileSystem object created successfully.")
 
+        with fs.open(f"{BUCKET_NAME}/{MODEL_PATH}", "rb") as f:
+            print("File opened from GCS, starting to load model with joblib...")
+            model = joblib.load(f)
+            print("!!! Model loaded successfully. !!!")
+
+    except Exception as e:
+        print(f"!!! FATAL ERROR DURING MODEL LOADING: {e} !!!")
+        # In a real app, you would raise this, but for debugging, we print
+        # raise RuntimeError(f"Could not load model from GCS: {e}")
+
+# The rest of your api.py file (PredictionInput, PredictionOutput, endpoints) remains the same...
 # --- API Data Model ---
 class PredictionInput(BaseModel):
     sno: int = Field(..., example=87)
