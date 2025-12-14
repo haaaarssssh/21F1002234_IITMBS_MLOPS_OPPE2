@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: heart-disease-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: heart-disease-api
+  template:
+    metadata:
+      labels:
+        app: heart-disease-api
+    spec:
+      containers:
+      - name: api-container
+        image: IMAGE_PLACEHOLDER
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "250m"
+          limits:
+            cpu: "500m"
+        env:
+        - name: GCP_PROJECT
+          valueFrom:
+            configMapKeyRef:
+              name: gcp-config
+              key: GCP_PROJECT_ID
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gcp-config
+data:
+  GCP_PROJECT_ID: "<YOUR_PROJECT_ID>" # Replace with your project ID
+```*   **IMPORTANT:** Before committing, replace `<YOUR_PROJECT_ID>` in the ConfigMap with your actual Project ID.

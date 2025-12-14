@@ -1,0 +1,12 @@
+pandas
+numpy
+scikit-learn==1.5.0
+joblib
+gcsfs
+google-cloud-storage
+fastapi
+uvicorn
+pydantic
+shap
+fairlearn
+evidently

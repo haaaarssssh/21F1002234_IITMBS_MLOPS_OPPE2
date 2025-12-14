@@ -1,0 +1,32 @@
+--- Model Explainability Analysis (Task 2) ---
+This plot shows the features that have the most impact on the model's prediction.
+Features pushing the prediction higher (towards 'no heart disease') are in red,
+and features pushing it lower (towards 'heart disease') are in blue.
+
+SHAP summary plot saved to shap_summary_plot.png
+
+**Plain English Explanation of Factors for 'No Heart Disease' Prediction:**
+
+Based on the SHAP summary plot, the factors most influential in predicting that a patient *does not* have heart disease are:
+1.  **'ca' (Number of major vessels colored by flourosopy):** A low value (e.g., 0) is a strong indicator of no heart disease.
+2.  **'thal' (Thalassemia):** A value of 2 ('normal') strongly suggests the absence of heart disease.
+3.  **'cp' (Chest Pain Type):** Lower values for chest pain type are associated with a higher likelihood of not having heart disease.
+4.  **'oldpeak' (ST depression induced by exercise):** A low 'oldpeak' value is a significant predictor for the 'no heart disease' class.
+Conversely, high values for these features strongly push the prediction towards having heart disease.
+
+*********************************************************
+
+--- Fairness Analysis (Task 3) ---
+
+Metrics grouped by age group:
+           accuracy  selection_rate
+age_group                          
+21-40         1.000        0.200000
+41-60         0.975        0.375000
+61-80         1.000        0.571429
+
+Demographic Parity Difference: 0.3714
+
+**Explanation:** Demographic Parity requires that the selection rate (the proportion of individuals predicted to have heart disease)
+is the same across all age groups. A value of 0 is perfectly fair. Our value indicates a disparity in prediction rates between the
+age groups with the highest and lowest selection rates.
